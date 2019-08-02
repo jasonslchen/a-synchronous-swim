@@ -4,6 +4,16 @@
 
   //
   // TODO: build the swim command fetcher here
+  const ajaxGet = () => {
+    //
+    $.ajax({
+      url: serverUrl,
+      type: 'GET',
+      success: (data) => {
+        // console.log(data);
+      }
+    })
+  };
   //
 
   /////////////////////////////////////////////////////////////////////
@@ -17,7 +27,7 @@
     $.ajax({
       type: 'POST',
       data: formData,
-      url: 'FILL_ME_IN',
+      url: serverUrl,
       cache: false,
       contentType: false,
       processData: false,

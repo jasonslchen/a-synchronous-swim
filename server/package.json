@@ -5,11 +5,13 @@
   "scripts": {
     "start": "nodemon .",
     "server": "node .",
-    "test": "node_modules/jest/bin/jest.js spec"
+    "test": "node_modules/jest/bin/jest.js spec",
+    "jest": "jest"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "jquery": "^3.4.1",
     "keypress": "^0.2.1",
     "parse-multipart": "^1.0.4",
     "underscore": "^1.9.1"
