@@ -10,18 +10,19 @@
       url: serverUrl,
       type: 'GET',
       success: (data) => {
-        console.log('hurray');
-        console.log(data);
+        console.log('hurray I swam!')
         SwimTeam.move(data);
         // SwimTeam.move(req._postData)
       }
     })
   };
 
-  $('form').on('click', (e) => {
-    e.preventDefault();
-    ajaxGet()
-  })
+  // $('form').on('click', (e) => {
+  //   e.preventDefault();
+  //   ajaxGet()
+  // })
+
+  setInterval(() => ajaxGet(), 1000);
 
 
 
