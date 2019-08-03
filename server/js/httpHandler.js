@@ -14,8 +14,6 @@ module.exports.backgroundImageFile = path.join('.', 'background.jpg');
 
 keypressHandler.initialize(messages.enqueue);
 
-
-
 // let messageQueue = null;
 
 // module.exports.initialize = (queue) => {
@@ -23,32 +21,29 @@ keypressHandler.initialize(messages.enqueue);
 //   // console.log(messageQueue);
 // };
 
-// console.log(messageQueue);
-
 module.exports.router = (req, res, next = ()=>{}) => {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
 
 
-  if (req.method === 'GET' || 'OPTIONS') {
+
+  if (req.method === 'GET' || req.method === 'OPTIONS') {
     let command = messages.dequeue();
-    if ((module.exports.backgroundImageFile === 'background.jpg')) {
-      // console.log(module.exports.backgroundImageFile);
-      res.writeHead(200, headers);
-      res.write(module.exports.backgroundImageFile)
+    res.writeHead(404, headers);
+    if (module.exports.backgroundImageFile) {
+      if (module.exports.backgroundImageFile  === 'background.jpg') {
+        res.writeHead(200, headers);
+        fs.readFile('./background.jpg', (err, data) => {
+          if (err) throw err;
+          res.write(data);
+          res.end(); // asynchronous
+        })
+      }
     }
     if (command) {
       res.writeHead(200, headers);
       res.write(command);
-    // }
     }
-    else {
-      // console.log(module.exports.backgroundImageFile)
-      res.writeHead(404, headers);
-    }
-
-  // res.write(['up', 'down', 'left', 'right'][Math.floor(Math.random() * 4)]);
-  // messages.dequeue()
+  }
   res.end();
   next(); // invoke next() at the end of a request to help with testing!
   }
-}

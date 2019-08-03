@@ -3,38 +3,42 @@ const fs = require('fs');
 const path = require('path');
 const expect = require('chai').expect;
 const server = require('./mockServer');
+// const message = require('./')
 
 const httpHandler = require('../js/httpHandler');
 
-
+const messages = require('../js/messageQueue.js')
 
 describe('server responses', () => {
 
   it('should respond to a OPTIONS request', (done) => {
     let {req, res} = server.mock('http://127.0.0.1:3000', 'OPTIONS');
-
+    messages.enqueue('up');
+    console.log(messages.messages);
     httpHandler.router(req, res);
     expect(res._responseCode).to.equal(200);
     expect(res._ended).to.equal(true);
-    expect(res._data.toString()).to.be.empty;
+    expect(res._data.toString()).to.equal('up');
 
     done();
   });
 
   it('should respond to a GET request for a swim command', (done) => {
     // write your test here
+    messages.enqueue('down')
     let {req, res} = server.mock('http://127.0.0.1:3000', 'GET');
     httpHandler.router(req, res);
+
     expect(res._responseCode).to.equal(200);
     expect(res._ended).to.equal(true);
-    expect(res._data.toString()).to.empty
-
+    expect(res._data.toString()).to.equal('down');
     // ('' || '\'\'' || 'up' || 'down' || 'left' || 'right');
 
     done();
   });
 
   it('should respond with 404 to a GET request for a missing background image', (done) => {
+    // messages.enqueue('up');
     httpHandler.backgroundImageFile = path.join('.', 'spec', 'missing.jpg');
     let {req, res} = server.mock('http://127.0.0.1:3000', 'GET');
     console.log(httpHandler.backgroundImageFile);
@@ -47,6 +51,7 @@ describe('server responses', () => {
   });
 
   it('should respond with 200 to a GET request for a present background image', (done) => {
+    messages.enqueue('up');
     httpHandler.backgroundImageFile = path.join('.', 'background.jpg');
     let {req, res} = server.mock('http://127.0.0.1:3000', 'GET');
     httpHandler.router(req, res);
@@ -59,7 +64,8 @@ describe('server responses', () => {
   var postTestFile = path.join('.', 'spec', 'water-lg.jpg');
   console.log(postTestFile);
 
-  xit('should respond to a POST request to save a background image', (done) => {
+  it('should respond to a POST request to save a background image', (done) => {
+    messages.enqueue('up');
     fs.readFile(postTestFile, (err, fileData) => {
       httpHandler.backgroundImageFile = path.join('.', 'spec', 'temp.jpg');
       let {req, res} = server.mock('http://127.0.0.1:3000', 'POST', fileData);
@@ -73,6 +79,7 @@ describe('server responses', () => {
   });
 
   xit('should send back the previously saved image', (done) => {
+    messages.enqueue('up');
     fs.readFile(postTestFile, (err, fileData) => {
       httpHandler.backgroundImageFile = path.join('.', 'spec', 'temp.jpg');
       let post = server.mock('http://127.0.0.1:3000', 'POST', fileData);

@@ -15,7 +15,7 @@
     })
   };
 
-  setInterval(() => ajaxGet(), 10000);
+  setInterval(() => ajaxGet(), 5000);
 
   /////////////////////////////////////////////////////////////////////
   // The ajax file uplaoder is provided for your convenience!
